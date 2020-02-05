@@ -46,13 +46,22 @@ beep_sound = pyglet.resource.media('materials/640Hz.wav', streaming=False)
 pedestal: AbstractImage = pyglet.image.load('materials/pedestal.png')
 fixr = pyglet.sprite.Sprite(pedestal, x=cntx + iso * deg1 - pedestal.width / 2.0, y=cnty - pedestal.height / 2.0)
 fixl = pyglet.sprite.Sprite(pedestal, x=cntx - iso * deg1 - pedestal.width / 2.0, y=cnty - pedestal.height / 2.0)
-file_names = [20]
-#file_names = copy.copy(display_info.variation) * rept
+file_names = ['1ls.png', '15ls.png', 'ls.png', 'ls.png', 'testls.png', 'ls.png']*rept
+file_names2 = ['ls.png', 'ls.png', '1ls.png', '15ls.png', 'ls.png', 'testls.png']*rept
+validity = ['valid', 'valid', 'invalid', 'invalid', 'local', 'local']*rept
+stim_cnd = ['line', 'block', 'line', 'block', 'local', 'local']*rept
+disparity = ['cross', 'cross', 'uncross', 'uncross', 't.uncross', 't.cross']*rept
 r = random.randint(0, math.factorial(len(file_names)))
 random.seed(r)
-#sequence = random.sample(file_names, len(file_names))
-
-sequence = [20]
+sequence = random.sample(file_names, len(file_names))
+random.seed(r)
+sequence2 = random.sample(file_names2, len(file_names))
+random.seed(r)
+seq3 = random.sample(validity, len(file_names))
+random.seed(r)
+seq4 = random.sample(stim_cnd, len(file_names))
+random.seed(r)
+seq5 = random.sample(disparity, len(file_names))
 
 # ----------- Core program following ----------------------------
 
@@ -159,7 +168,7 @@ def get_results(dt):
               'mdt: ' + str(m) + '\n'
               'dtstd: ' + str(d) + '\n'
               'latency: ' + str(latency) + '\n'
-              'condition: ' + str(sequence[n - 1]) + '\n'
+              'condition: ' + str(seq3[n - 1]) + ' ' + str(seq4[n-1]) + '\n'
               '--------------------------------------------------')
     print(string)
     # Check the experiment continue or break
@@ -173,13 +182,11 @@ def get_results(dt):
 def set_polygon():
     global L, R, sequence, n
     # Set up polygon for stimulus
-    R = pyglet.resource.image('stereograms/' + str(sequence[n]) +
-                              'ls.png')
+    R = pyglet.resource.image('stereograms/' + str(sequence[n]))
     R = pyglet.sprite.Sprite(R)
     R.x = cntx + deg1 * iso - R.width / 2.0
     R.y = cnty - R.height / 2.0
-    L = pyglet.resource.image('stereograms/' +  # str(sequence[n]) +
-                              'ls.png')
+    L = pyglet.resource.image('stereograms/' + str(sequence2[n]))
     L = pyglet.sprite.Sprite(L)
     L.x = cntx - deg1 * iso - L.width / 2.0
     L.y = cnty - L.height / 2.0
@@ -219,7 +226,11 @@ daten = datetime.datetime.now()
 
 # Write results onto csv
 results = pd.DataFrame({'trial': list(range(1, len(file_names) + 1)),  # Store variance_A conditions
-                        'width': sequence,
+                        'right_eye': sequence,
+                        'left_eye': sequence2,
+                        'validity': seq3,
+                        'stim_cnd': seq4,
+                        'disparity': seq5,
                         'transient_counts': tcs,  # Store transient_counts
                         'cdt': cdt,  # Store cdt(target values) and input number of trials
                         'mdt': mdt,

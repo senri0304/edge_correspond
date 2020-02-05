@@ -7,7 +7,7 @@ aspect_width = 16
 aspect_height = 9
 
 # Input a variety
-variation = [1, 10, 20]
+variation = [1, 15]
 #test_eye = [1, -1]
 
 # Get display information
