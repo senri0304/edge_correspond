@@ -115,11 +115,11 @@ img = Image.new("RGB", (sz, sz), (lb, lb, lb))
 draw = ImageDraw.Draw(img)
 
 # fixation point
-draw.rectangle((int(sz / 2) - f, int(sz / 2) + eccentricity + f * 3,
-                int(sz / 2) + f, int(sz / 2) + eccentricity - f * 3),
+draw.rectangle((int(sz / 2) - f + eccentricity, int(sz / 2) + f * 3,
+                int(sz / 2) + f + eccentricity, int(sz / 2) - f * 3),
                fill=(0, 0, 255), outline=None)
-draw.rectangle((int(sz / 2) - f * 3, int(sz / 2) + eccentricity + f,
-                int(sz / 2) + f * 3, int(sz / 2) + eccentricity - f),
+draw.rectangle((int(sz / 2) - f * 3 + eccentricity, int(sz / 2) + f,
+                int(sz / 2) + f * 3 + eccentricity, int(sz / 2) - f),
                fill=(0, 0, 255), outline=None)
 
 to_dir = 'materials'

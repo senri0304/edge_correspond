@@ -9,7 +9,7 @@ import display_info
 
 # Prefernce
 # ------------------------------------------------------------------------
-rept = 1
+rept = 5
 exclude_mousePointer = False
 # ------------------------------------------------------------------------
 
@@ -46,13 +46,13 @@ beep_sound = pyglet.resource.media('materials/640Hz.wav', streaming=False)
 pedestal: AbstractImage = pyglet.image.load('materials/pedestal.png')
 fixr = pyglet.sprite.Sprite(pedestal, x=cntx + iso * deg1 - pedestal.width / 2.0, y=cnty - pedestal.height / 2.0)
 fixl = pyglet.sprite.Sprite(pedestal, x=cntx - iso * deg1 - pedestal.width / 2.0, y=cnty - pedestal.height / 2.0)
-file_names = [20]
-#file_names = copy.copy(display_info.variation) * rept
+#file_names = [20]
+file_names = copy.copy(display_info.variation) * rept
 r = random.randint(0, math.factorial(len(file_names)))
 random.seed(r)
-#sequence = random.sample(file_names, len(file_names))
+sequence = random.sample(file_names, len(file_names))
 
-sequence = [20]
+#sequence = [20]
 
 # ----------- Core program following ----------------------------
 

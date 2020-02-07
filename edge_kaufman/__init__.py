@@ -6,7 +6,7 @@ import numpy as np
 from PIL import Image, ImageDraw
 from display_info import *
 
-to_dir = 'stereograms2'
+to_dir = 'stereograms'
 os.makedirs(to_dir, exist_ok=True)
 
 # Input stereogram size in cm unit
@@ -48,45 +48,72 @@ for i in variation:
     img = Image.new("RGB", (sz, sz), (lb, lb, lb))
     draw = ImageDraw.Draw(img)
 
-    draw.rectangle((int(sz / 2) - int(f / 2) + f*5, int(sz / 2) + int(ll / 2),
-                    int(sz / 2) + int(f*i / 2) + f*5, int(sz / 2) - int(ll / 2)),
+    draw.rectangle((int(sz / 2) - int(f / 2) - f*i, int(sz / 2) + int(ll / 2),
+                    int(sz / 2) + int(f / 2) + f*i, int(sz / 2) + int((ll*0.25) / 2)),
                    fill=(0, 0, 0), outline=None)
 
-    draw.rectangle((int(sz / 2) + int(f / 2) - f*5, int(sz / 2) + int(ll / 2),
-                    int(sz / 2) - int(f*i / 2) - f*5, int(sz / 2) - int(ll / 2)),
+    draw.rectangle((int(sz / 2) - int(f / 2) - f*i, int(sz / 2) - int(ll / 2),
+                    int(sz / 2) + int(f / 2) + f*i, int(sz / 2) - int((ll*0.25) / 2)),
                    fill=(0, 0, 0), outline=None)
 
     # fixation point
     eccentricity = round(1 / np.sqrt(2.0) / d_height * resolution)
-    draw.rectangle((int(sz / 2) - f, int(sz / 2) + eccentricity + f * 3,
-                    int(sz / 2) + f, int(sz / 2) + eccentricity - f * 3),
+    draw.rectangle((int(sz / 2) + eccentricity - f, int(sz / 2) + eccentricity + f * 3,
+                    int(sz / 2) + eccentricity + f, int(sz / 2) + eccentricity - f * 3),
                    fill=(0, 0, 255), outline=None)
-    draw.rectangle((int(sz / 2) - f * 3, int(sz / 2) + eccentricity + f,
-                    int(sz / 2) + f * 3, int(sz / 2) + eccentricity - f),
+    draw.rectangle((int(sz / 2) + eccentricity - f * 3, int(sz / 2) + eccentricity + f,
+                    int(sz / 2) + eccentricity + f * 3, int(sz / 2) + eccentricity - f),
                    fill=(0, 0, 255), outline=None)
 
-    basename = os.path.basename(str(i) + 'ls.png')
+    basename = os.path.basename(str(i) + '42bs.png')
+    img.save(os.path.join(to_dir, basename), quality=100)
+
+for i in variation:
+    img = Image.new("RGB", (sz, sz), (lb, lb, lb))
+    draw = ImageDraw.Draw(img)
+
+    draw.rectangle((int(sz / 2) - int(f / 2) - f*i, int(sz / 2) + int(ll),
+                    int(sz / 2) + int(f / 2) + f*i, int(sz / 2) + int((ll*0.25))),
+                   fill=(0, 0, 0), outline=None)
+
+    draw.rectangle((int(sz / 2) - int(f / 2) - f*i, int(sz / 2) - int(ll),
+                    int(sz / 2) + int(f / 2) + f*i, int(sz / 2) - int((ll*0.25))),
+                   fill=(0, 0, 0), outline=None)
+
+    # fixation point
+    eccentricity = round(1 / np.sqrt(2.0) / d_height * resolution)
+    draw.rectangle((int(sz / 2) + eccentricity - f, int(sz / 2) + eccentricity + f * 3,
+                    int(sz / 2) + eccentricity + f, int(sz / 2) + eccentricity - f * 3),
+                   fill=(0, 0, 255), outline=None)
+    draw.rectangle((int(sz / 2) + eccentricity - f * 3, int(sz / 2) + eccentricity + f,
+                    int(sz / 2) + eccentricity + f * 3, int(sz / 2) + eccentricity - f),
+                   fill=(0, 0, 255), outline=None)
+
+    basename = os.path.basename(str(i) + '84bs.png')
     img.save(os.path.join(to_dir, basename), quality=100)
 
 # ls
-img = Image.new("RGB", (sz, sz), (lb, lb, lb))
-draw = ImageDraw.Draw(img)
+s = 0
+for i in [1, 2]:
+    img = Image.new("RGB", (sz, sz), (lb, lb, lb))
+    draw = ImageDraw.Draw(img)
 
-draw.rectangle((int(sz / 2) - int(f / 2), int(sz / 2) + int(ll / 2),
-                int(sz / 2) + int(f / 2), int(sz / 2) - int(ll / 2)),
-               fill=(lb*2, 0, 0), outline=None)
-                    # or 153
-# fixation point
-eccentricity = round(1 / np.sqrt(2.0) / d_height * resolution)
-draw.rectangle((int(sz / 2) - f, int(sz / 2) + eccentricity + f * 3,
-                int(sz / 2) + f, int(sz / 2) + eccentricity - f * 3),
-               fill=(0, 0, 255), outline=None)
-draw.rectangle((int(sz / 2) - f * 3, int(sz / 2) + eccentricity + f,
-                int(sz / 2) + f * 3, int(sz / 2) + eccentricity - f),
-               fill=(0, 0, 255), outline=None)
+    draw.rectangle((int(sz / 2) - int(f / 2), int(sz / 2) + int(ll*i / 2),
+                    int(sz / 2) + int(f / 2), int(sz / 2) - int(ll*i / 2)),
+                   fill=(lb*2, 0, 0), outline=None)
+                      # or 153
+    # fixation point
+    eccentricity = round(1 / np.sqrt(2.0) / d_height * resolution)
+    draw.rectangle((int(sz / 2) + eccentricity - f, int(sz / 2) + eccentricity + f * 3,
+                    int(sz / 2) + eccentricity + f, int(sz / 2) + eccentricity - f * 3),
+                    fill=(0, 0, 255), outline=None)
+    draw.rectangle((int(sz / 2) + eccentricity - f * 3, int(sz / 2) + eccentricity + f,
+                    int(sz / 2) + eccentricity + f * 3, int(sz / 2) + eccentricity - f),
+                   fill=(0, 0, 255), outline=None)
 
-basename = os.path.basename('ls.png')
-img.save(os.path.join(to_dir, basename), quality=100)
+    s += 42
+    basename = os.path.basename(str(s) + 'ls.png')
+    img.save(os.path.join(to_dir, basename), quality=100)
 
 # other images prepare
 #for k in variation:

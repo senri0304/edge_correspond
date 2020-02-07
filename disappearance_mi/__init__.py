@@ -6,7 +6,7 @@ import numpy as np
 from PIL import Image, ImageDraw
 from display_info import *
 
-to_dir = 'stereograms'
+to_dir = 'stereograms2'
 os.makedirs(to_dir, exist_ok=True)
 
 # Input stereogram size in cm unit
@@ -75,7 +75,7 @@ draw = ImageDraw.Draw(img)
 draw.rectangle((int(sz / 2) - int(f / 2), int(sz / 2) + int(ll / 2),
                 int(sz / 2) + int(f / 2), int(sz / 2) - int(ll / 2)),
                fill=(lb*2, 0, 0), outline=None)
-
+                    # or 153
 # fixation point
 eccentricity = round(1 / np.sqrt(2.0) / d_height * resolution)
 draw.rectangle((int(sz / 2) - f, int(sz / 2) + eccentricity + f * 3,

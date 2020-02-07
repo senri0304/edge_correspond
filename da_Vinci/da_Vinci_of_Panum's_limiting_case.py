@@ -48,8 +48,8 @@ fixr = pyglet.sprite.Sprite(pedestal, x=cntx + iso * deg1 - pedestal.width / 2.0
 fixl = pyglet.sprite.Sprite(pedestal, x=cntx - iso * deg1 - pedestal.width / 2.0, y=cnty - pedestal.height / 2.0)
 file_names = ['1ls.png', '15ls.png', 'ls.png', 'ls.png', 'testls.png', 'ls.png']*rept
 file_names2 = ['ls.png', 'ls.png', '1ls.png', '15ls.png', 'ls.png', 'testls.png']*rept
-validity = ['valid', 'valid', 'invalid', 'invalid', 'local', 'local']*rept
-stim_cnd = ['line', 'block', 'line', 'block', 'local', 'local']*rept
+validity = ['valid', 'valid', 'invalid', 'invalid', 'local_r', 'local_l']*rept
+stim_cnd = ['line', 'block', 'line', 'block', 'local_r', 'local_l']*rept
 disparity = ['cross', 'cross', 'uncross', 'uncross', 't.uncross', 't.cross']*rept
 r = random.randint(0, math.factorial(len(file_names)))
 random.seed(r)
@@ -62,6 +62,8 @@ random.seed(r)
 seq4 = random.sample(stim_cnd, len(file_names))
 random.seed(r)
 seq5 = random.sample(disparity, len(file_names))
+
+print(str(sequence) + '] \n [' + str(sequence2))
 
 # ----------- Core program following ----------------------------
 
@@ -168,7 +170,7 @@ def get_results(dt):
               'mdt: ' + str(m) + '\n'
               'dtstd: ' + str(d) + '\n'
               'latency: ' + str(latency) + '\n'
-              'condition: ' + str(seq3[n - 1]) + ' ' + str(seq4[n-1]) + '\n'
+              'condition: ' + str(seq3[n - 1]) + ' ' + str(seq4[n-1]) + ' ' + str(seq5[n-1]) + '\n'
               '--------------------------------------------------')
     print(string)
     # Check the experiment continue or break
