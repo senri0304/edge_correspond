@@ -9,7 +9,7 @@ import display_info
 
 # Prefernce
 # ------------------------------------------------------------------------
-rept = 1
+rept = 5
 exclude_mousePointer = False
 # ------------------------------------------------------------------------
 
@@ -48,9 +48,9 @@ fixr = pyglet.sprite.Sprite(pedestal, x=cntx + iso * deg1 - pedestal.width / 2.0
 fixl = pyglet.sprite.Sprite(pedestal, x=cntx - iso * deg1 - pedestal.width / 2.0, y=cnty - pedestal.height / 2.0)
 file_names = ['1ls.png', '15ls.png', 'ls.png', 'ls.png', 'testls.png', 'ls.png']*rept
 file_names2 = ['ls.png', 'ls.png', '1ls.png', '15ls.png', 'ls.png', 'testls.png']*rept
-validity = ['valid', 'valid', 'invalid', 'invalid', 'local_r', 'local_l']*rept
+validity = ['valid', 'valid', 'invalid', 'invalid', 'local', 'local']*rept
 stim_cnd = ['line', 'block', 'line', 'block', 'local_r', 'local_l']*rept
-disparity = ['cross', 'cross', 'uncross', 'uncross', 't.uncross', 't.cross']*rept
+disparity = ['uncross', 'uncross', 'cross', 'cross', 'uncross', 'cross']*rept
 r = random.randint(0, math.factorial(len(file_names)))
 random.seed(r)
 sequence = random.sample(file_names, len(file_names))
