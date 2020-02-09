@@ -63,7 +63,7 @@ seq4 = random.sample(stim_cnd, len(file_names))
 random.seed(r)
 seq5 = random.sample(disparity, len(file_names))
 
-print(str(sequence) + '\n' + str(sequence2))
+print(str(sequence) + '] \n [' + str(sequence2))
 
 # ----------- Core program following ----------------------------
 
@@ -184,11 +184,11 @@ def get_results(dt):
 def set_polygon():
     global L, R, sequence, n
     # Set up polygon for stimulus
-    R = pyglet.resource.image('stereograms3/' + str(sequence[n]))
+    R = pyglet.resource.image('stereograms/' + str(sequence[n]))
     R = pyglet.sprite.Sprite(R)
     R.x = cntx + deg1 * iso - R.width / 2.0
     R.y = cnty - R.height / 2.0
-    L = pyglet.resource.image('stereograms3/' + str(sequence2[n]))
+    L = pyglet.resource.image('stereograms/' + str(sequence2[n]))
     L = pyglet.sprite.Sprite(L)
     L.x = cntx - deg1 * iso - L.width / 2.0
     L.y = cnty - L.height / 2.0
@@ -242,11 +242,11 @@ results = pd.DataFrame({'trial': list(range(1, len(file_names) + 1)),  # Store v
                         'release_timing': release_timing,
                         'key_press_list': kud_list})  # Store the key_press_duration list
 
-os.makedirs('data_vinci', exist_ok=True)
+os.makedirs('data_occ', exist_ok=True)
 
 name = str(daten)
 name = name.replace(":", "'")
-results.to_csv(path_or_buf='./data_vinci/DATE' + name + '.csv', index=False)  # Output experimental data_occ
+results.to_csv(path_or_buf='./data_occ/DATE' + name + '.csv', index=False)  # Output experimental data_occ
 
 # Output following to shell, check this experiment
 print(u'開始日時: ' + str(start))

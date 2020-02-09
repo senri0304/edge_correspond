@@ -243,7 +243,7 @@ os.makedirs('data', exist_ok=True)
 
 name = str(daten)
 name = name.replace(":", "'")
-results.to_csv(path_or_buf='./data/DATE' + name + '.csv', index=False)  # Output experimental data
+results.to_csv(path_or_buf='./data_occ/DATE' + name + '.csv', index=False)  # Output experimental data_occ
 
 # Output following to shell, check this experiment
 print(u'開始日時: ' + str(start))
