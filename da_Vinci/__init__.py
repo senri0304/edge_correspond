@@ -237,24 +237,24 @@ for i in variation:
     img.save(os.path.join(to_dir, basename), quality=100)
 
 
-# ls
-img = Image.new("RGB", (sz, sz), (lb, lb, lb))
-draw = ImageDraw.Draw(img)
+    # ls
+    img = Image.new("RGB", (sz, sz), (lb, lb, lb))
+    draw = ImageDraw.Draw(img)
 
-draw.rectangle((int(sz / 2) - int(f / 2) - disparity, int(sz / 2) + int(ll / 2),
-                int(sz / 2) + int(f / 2) - disparity, int(sz / 2) - int(ll / 2)),
-               fill=(0, 0, 0), outline=None)
+    draw.rectangle((int(sz / 2) - int(f / 2)*i - disparity, int(sz / 2) + int(ll / 2),
+                    int(sz / 2) + int(f / 2) - disparity, int(sz / 2) - int(ll / 2)),
+                   fill=(0, 0, 0), outline=None)
 
-# fixation point
-eccentricity = round(1 / np.sqrt(2.0) / d_height * resolution)
-draw.rectangle((int(sz / 2) - f + eccentricity, int(sz / 2) + f * 3,
-                int(sz / 2) + f + eccentricity, int(sz / 2) - f * 3),
-               fill=(0, 0, 255), outline=None)
-draw.rectangle((int(sz / 2) - f * 3 + eccentricity, int(sz / 2) + f,
-                int(sz / 2) + f * 3 + eccentricity, int(sz / 2) - f),
-               fill=(0, 0, 255), outline=None)
+    # fixation point
+    eccentricity = round(1 / np.sqrt(2.0) / d_height * resolution)
+    draw.rectangle((int(sz / 2) - f + eccentricity, int(sz / 2) + f * 3,
+                    int(sz / 2) + f + eccentricity, int(sz / 2) - f * 3),
+                   fill=(0, 0, 255), outline=None)
+    draw.rectangle((int(sz / 2) - f * 3 + eccentricity, int(sz / 2) + f,
+                    int(sz / 2) + f * 3 + eccentricity, int(sz / 2) - f),
+                   fill=(0, 0, 255), outline=None)
 
-basename = os.path.basename('ls.png')
-img.save(os.path.join(to_dir, basename), quality=100)
+    basename = os.path.basename(str(i) + 'cls.png')
+    img.save(os.path.join(to_dir, basename), quality=100)
 
 imgt.save(os.path.join(to_dir, 'testls.png'), quality=100)
