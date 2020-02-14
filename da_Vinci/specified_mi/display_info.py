@@ -21,7 +21,7 @@ d_height = 2.54 * (aspect_height / c) * inch
 
 deg1 = round(resolution * (1 / d_height))
 
-left_eye = ['testlsn.png', 'controllsn.png', 'testlst.png', 'controllst.png']
-right_eye = ['controllst.png', 'testlsn.png', 'controllsn.png', 'testlsn.png']
-disparity = ['cross', 'cross', 'uncross', 'uncross']
+left_eye = ['testls.png', 'lsn.png', 'testls.png', 'lst.png']
+right_eye = ['lsn.png', 'testls.png', 'lst.png', 'testls.png']
+disparity = ['uncross', 'cross', 'cross', 'uncross']
 test_eye = ['left', 'right', 'left', 'right']

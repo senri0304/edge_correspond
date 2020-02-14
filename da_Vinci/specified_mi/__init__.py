@@ -40,42 +40,58 @@ disparity = f*2
 eccentricity = round(1 / np.sqrt(2.0) * ecc / d_height * resolution)
 
 # Generate stereograms
-for i, j in enumerate(['control', 'test']):
-    col = [2, 0]
+img = Image.new("RGB", (sz, sz), (lb, lb, lb))
+draw = ImageDraw.Draw(img)
+img2 = Image.new("RGB", (sz, sz), (lb, lb, lb))
+draw2 = ImageDraw.Draw(img2)
 
-    img = Image.new("RGB", (sz, sz), (lb, lb, lb))
-    draw = ImageDraw.Draw(img)
-    img2 = Image.new('RGB', (sz, sz), (lb, lb, lb))
-    draw2 = ImageDraw.Draw(img2)
+draw.rectangle((int(sz / 2) - int(f / 2) - disparity*2, int(sz / 2) + int(ll / 2),
+                int(sz / 2) + int(f / 2) - disparity*2, int(sz / 2) - int(ll / 2)),
+               fill=(0, 0, 0), outline=None)
 
-    draw.rectangle((int(sz / 2) - int(f / 2) - disparity, int(sz / 2) + int(ll / 2),
-                    int(sz / 2) + int(f / 2) - disparity, int(sz / 2) - int(ll / 2)),
-                   fill=(lb*col[i], 0, 0), outline=None)
+draw2.rectangle((int(sz / 2) + int(f / 2) + disparity*2, int(sz / 2) + int(ll / 2),
+                 int(sz / 2) - int(f / 2) + disparity*2, int(sz / 2) - int(ll / 2)),
+                fill=(0, 0, 0), outline=None)
 
-    draw2.rectangle((int(sz / 2) + int(f / 2) + disparity, int(sz / 2) + int(ll / 2),
-                    int(sz / 2) - int(f / 2) + disparity, int(sz / 2) - int(ll / 2)),
-                    fill=(lb*col[i], 0, 0), outline=None)
+# fixation point
+draw.rectangle((int(sz / 2) - f + eccentricity, int(sz / 2) + f * 3 + eccentricity,
+                int(sz / 2) + f + eccentricity, int(sz / 2) - f * 3 + eccentricity),
+               fill=(0, 0, 255), outline=None)
+draw.rectangle((int(sz / 2) - f * 3 + eccentricity, int(sz / 2) + f + eccentricity,
+                int(sz / 2) + f * 3 + eccentricity, int(sz / 2) - f + eccentricity),
+               fill=(0, 0, 255), outline=None)
 
-    # fixation point
-    draw.rectangle((int(sz / 2) - f + eccentricity, int(sz / 2) + f * 3,
-                    int(sz / 2) + f + eccentricity, int(sz / 2) - f * 3),
-                   fill=(0, 0, 255), outline=None)
-    draw.rectangle((int(sz / 2) - f * 3 + eccentricity, int(sz / 2) + f,
-                    int(sz / 2) + f * 3 + eccentricity, int(sz / 2) - f),
-                   fill=(0, 0, 255), outline=None)
+draw2.rectangle((int(sz / 2) - f + eccentricity, int(sz / 2) + f * 3 + eccentricity,
+                 int(sz / 2) + f + eccentricity, int(sz / 2) - f * 3 + eccentricity),
+                fill=(0, 0, 255), outline=None)
+draw2.rectangle((int(sz / 2) - f * 3 + eccentricity, int(sz / 2) + f + eccentricity,
+                 int(sz / 2) + f * 3 + eccentricity, int(sz / 2) - f + eccentricity),
+                fill=(0, 0, 255), outline=None)
 
-    draw2.rectangle((int(sz / 2) - f + eccentricity, int(sz / 2) + f * 3,
-                    int(sz / 2) + f + eccentricity, int(sz / 2) - f * 3),
-                   fill=(0, 0, 255), outline=None)
-    draw2.rectangle((int(sz / 2) - f * 3 + eccentricity, int(sz / 2) + f,
-                    int(sz / 2) + f * 3 + eccentricity, int(sz / 2) - f),
-                    fill=(0, 0, 255), outline=None)
+basename = os.path.basename('lst.png')
+img.save(os.path.join(to_dir, basename), quality=100)
 
-    basename = os.path.basename(str(j) + 'lst.png')
-    img.save(os.path.join(to_dir, basename), quality=100)
+basename = os.path.basename('lsn.png')
+img2.save(os.path.join(to_dir, basename), quality=100)
 
-    basename = os.path.basename(str(j) + 'lsn.png')
-    img2.save(os.path.join(to_dir, basename), quality=100)
+# testgram
+img = Image.new("RGB", (sz, sz), (lb, lb, lb))
+draw = ImageDraw.Draw(img)
+
+draw.rectangle((int(sz / 2) - int(f / 2), int(sz / 2) + int(ll / 2),
+                int(sz / 2) + int(f / 2), int(sz / 2) - int(ll / 2)),
+               fill=(lb*2, 0, 0), outline=None)
+
+# fixation point
+draw.rectangle((int(sz / 2) - f + eccentricity, int(sz / 2) + f * 3 + eccentricity,
+                int(sz / 2) + f + eccentricity, int(sz / 2) - f * 3 + eccentricity),
+               fill=(0, 0, 255), outline=None)
+draw.rectangle((int(sz / 2) - f * 3 + eccentricity, int(sz / 2) + f + eccentricity,
+                int(sz / 2) + f * 3 + eccentricity, int(sz / 2) - f + eccentricity),
+               fill=(0, 0, 255), outline=None)
+
+basename = os.path.basename('testls.png')
+img.save(os.path.join(to_dir, basename), quality=100)
 
 
 # stereogram without stimuli
@@ -83,11 +99,11 @@ img = Image.new("RGB", (sz, sz), (lb, lb, lb))
 draw = ImageDraw.Draw(img)
 
 # fixation point
-draw.rectangle((int(sz / 2) - f + eccentricity, int(sz / 2) + f * 3,
-                int(sz / 2) + f + eccentricity, int(sz / 2) - f * 3),
+draw.rectangle((int(sz / 2) - f + eccentricity, int(sz / 2) + f * 3 + eccentricity,
+                int(sz / 2) + f + eccentricity, int(sz / 2) - f * 3 + eccentricity),
                fill=(0, 0, 255), outline=None)
-draw.rectangle((int(sz / 2) - f * 3 + eccentricity, int(sz / 2) + f,
-                int(sz / 2) + f * 3 + eccentricity, int(sz / 2) - f),
+draw.rectangle((int(sz / 2) - f * 3 + eccentricity, int(sz / 2) + f + eccentricity,
+                int(sz / 2) + f * 3 + eccentricity, int(sz / 2) - f + eccentricity),
                fill=(0, 0, 255), outline=None)
 
 to_dir = 'materials'
