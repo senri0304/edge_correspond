@@ -23,11 +23,26 @@ library(reshape2)
 #library(ggplot2)
 cols = colorRamp(c("#0080ff","yellow","#ff8000"))
 
+camp = subset(temp, temp$sub == 'kb')
+#camp <- transform(camp, validity=factor(test_eye, levels = c("valid", "invalid", "local")))
+
+gg(camp, camp$cdt, 20, 'cdt of monocular image')
+
+
+g <- ggplot(temp, aes(x=test_eye, y=cdt, fill=test_eye))
+g <- g + geom_boxplot(outlier.shape = NA)
+g <- g + geom_jitter(size = 0.5, col='pink')
+g <- g + facet_wrap(~disparity, ncol = 3, scales = "free")
+g <- g + ylim(0, 30)
+g <- g + stat_summary(fun.y = "mean", geom = "point", shape = 21, size = 2., fill = "white")
+g <- g + ggtitle('cdt')
+plot(g)
+
 # x data, y vector y-axis, z ylim, t title
-gg <- function(x, y, z, t) {g <- ggplot(x, aes(x=stim_cnd, y=y, fill=disparity))
+gg <- function(x, y, z, t) {g <- ggplot(x, aes(x=test_eye, y=y, fill=disparity))
   g <- g + geom_boxplot(outlier.shape = NA)
   g <- g + geom_jitter(size = 0.5, col='pink')
-  g <- g + facet_wrap(~validity, ncol = 3, scales = "free")
+  g <- g + facet_wrap(~disparity, ncol = 3, scales = "free")
   g <- g + ylim(0, z)
   g <- g + stat_summary(fun.y = "mean", geom = "point", shape = 21, size = 2., fill = "white")
   g <- g + ggtitle(paste(t, usi[i]))
