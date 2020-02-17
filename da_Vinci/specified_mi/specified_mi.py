@@ -62,8 +62,6 @@ seq4 = random.sample(test_eye, len(file_names))
 
 print(str(seq1) + '\n' + str(seq2))
 
-# ----------- Core program following ----------------------------
-
 # A getting key response function
 class key_resp(object):
     def on_key_press(self, symbol, modifiers):
