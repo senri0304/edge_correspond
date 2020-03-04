@@ -23,48 +23,36 @@ library(reshape2)
 #library(ggplot2)
 cols = colorRamp(c("#0080ff","yellow","#ff8000"))
 
-camp = subset(temp, temp$sub == 'kb')
-#camp <- transform(camp, validity=factor(test_eye, levels = c("valid", "invalid", "local")))
-
-gg(camp, camp$cdt, 20, 'cdt of monocular image')
-
-
-g <- ggplot(temp, aes(x=test_eye, y=cdt, fill=test_eye))
-g <- g + geom_boxplot(outlier.shape = NA)
-g <- g + geom_jitter(size = 0.5, col='pink')
-g <- g + facet_wrap(~disparity, ncol = 3, scales = "free")
-g <- g + ylim(0, 30)
-g <- g + stat_summary(fun.y = "mean", geom = "point", shape = 21, size = 2., fill = "white")
-g <- g + ggtitle('cdt')
-plot(g)
-
 # x data, y vector y-axis, z ylim, t title
 gg <- function(x, y, z, t) {g <- ggplot(x, aes(x=test_eye, y=y, fill=disparity))
-  g <- g + geom_boxplot(outlier.shape = NA)
-  g <- g + geom_jitter(size = 0.5, col='pink')
-  g <- g + facet_wrap(~disparity, ncol = 3, scales = "free")
-  g <- g + ylim(0, z)
-  g <- g + stat_summary(fun.y = "mean", geom = "point", shape = 21, size = 2., fill = "white")
-  g <- g + ggtitle(paste(t, usi[i]))
-  plot(g)
+g <- g + geom_boxplot(outlier.shape = NA)
+g <- g + geom_jitter(size = 0.5, col=x$sn)
+g <- g + facet_wrap(~disparity, ncol = 3, scales = "free")
+g <- g + ylim(0, z)
+g <- g + stat_summary(fun.y = "mean", geom = "point", shape = 21, size = 2., fill = "white")
+g <- g + ggtitle(paste(t, usi[i]))
+plot(g)
 }
+
+camp = subset(temp, temp$sub == 'kt')
+gg(camp, camp$cdt, 30, 'cdt')
 
 # Plot indivisual data
 for (i in 1:n){
   camp = subset(temp, temp$sub == usi[i])
-  camp <- transform(camp, validity=factor(validity, levels = c("valid", "invalid", "local")))
+  #  camp <- transform(camp, validity=factor(test_eye, levels = c("valid", "invalid", "local")))
   
   camp = subset(temp, temp$sub == usi[i])
-  gg(camp, camp$cdt, 20, 'cdt of monocular image')
+  gg(camp, camp$cdt, 30, 'cdt of monocular image')
 }
-  # Plot mdt
-  gg(camp, camp$mdt, 5, 'mean of dt')
-  
-  # Plot latency
-  gg(camp, camp$latency, 10, 'latency')
-  
-  # Plot number of transients
-  gg(camp, camp$transient_counts, 20, 'transient_counts')
+# Plot mdt
+gg(camp, camp$mdt, 5, 'mean of dt')
+
+# Plot latency
+gg(camp, camp$latency, 10, 'latency')
+
+# Plot number of transients
+gg(camp, camp$transient_counts, 20, 'transient_counts')
 }
 
 # Plot indivisual data
@@ -104,28 +92,35 @@ for (i in 1:n){
 }
 
 # Reshape data for anova
-ano = aggregate(x=temp$cdt, by=temp[c("validity", "stim_cnd", "disparity", "sub")], FUN=mean)
+ano = aggregate(x=temp$cdt, by=temp[c('test_eye', "disparity", "sub")], FUN=mean)
 library("reshape2")
-dc = dcast(ano, sub ~ validity, fun.aggregate=mean, value.var="x")
+dc = dcast(ano, sub ~ test_eye + disparity, fun.aggregate=mean, value.var="x")
 dc = subset(dc, select = -sub)
 ddd = ncol(dc)
 
+temp <- subset(temp, temp$sub!='kn')
 
 library(doBy)
-m <- summaryBy(cdt ~ validity + stim_cnd + disparity, data=temp, FUN=c(mean, sd))
-m <- transform(m, validity=factor(validity, levels = c("valid", "invalid", "local")))
-g <- ggplot(m, aes(y=cdt.mean, x=stim_cnd, fill=disparity))
-g <- g + geom_bar(stat = "identity") + coord_cartesian(ylim=c(0,20))
-g <- g + facet_wrap(~validity, ncol = 3, scales = "free")
-g <- g + geom_errorbar(aes(ymax=cdt.mean + cdt.sd, ymin=cdt.mean - cdt.sd), data=m, width=0.05)
+mp2 <- summaryBy(cdt ~ test_eye + disparity + sn, data=temp, FUN=mean)
+m2 <- summaryBy(cdt ~ test_eye + disparity, temp, FUN=mean)
+g <- ggplot(mp2, aes(y=cdt.mean, x=test_eye, fill=test_eye))
+g <- g + stat_summary(fun.y = "mean", geom='bar')+ coord_cartesian(ylim=c(0,30))
+#g <- g + geom_bar(stat = "identity") + coord_cartesian(ylim=c(0,30))
+g <- g + facet_wrap(~disparity, ncol = 3, scales = "free")
+g <- g + geom_point(position=position_jitterdodge(jitter.width = 0.7, jitter.height = 0, dodge.width = .9), colour=mp2$sn)
 plot(g)
 
-# diff inhibition
-panum <- subset(temp, validity!='local', select=c(cdt, validity, stim_cnd, disparity, sub))
-lo <- subset(temp, validity=='local', select=c(cdt, validity, stim_cnd, disparity, sub))
-m <- summaryBy(cdt ~ disparity + sub, data=lo, FUN=mean)
-pm <- summaryBy(cdt ~ validity + stim_cnd + disparity + sub, data=panum, FUN=mean)
 
+m <- summaryBy(cdt ~ disparity + sub, data=temp, FUN=mean)
+g <- ggplot(m, aes(x=disparity, y=cdt.mean, color=sub, group = sub)) +
+  geom_point() +
+  geom_line()
+plot(g)
+
+# paired t.test
+t <- t.test(m[m$disparity!='uncross', ]$cdt.mean, m[m$disparity!='cross', ]$cdt.mean, paired=T)
+
+# diff
 diff <- pm
 diff$inhibit <- m$cdt.mean - pm$cdt.mean
 mutual_inhibit <- summaryBy(inhibit ~ validity + stim_cnd + disparity + sub, data=diff, FUN=c(length, mean, sd))
@@ -135,5 +130,5 @@ gg(mutual_inhibit, mutual_inhibit$inhibit.mean, 15, 'mutual_inhibition')
 
 # Anovakun
 source("anovakun_483.txt") # encoding = "CP932"
-anovakun(dc,"sA", 3, peta=T, cm = T, holm=T)
+anovakun(dc,"sAB", 2, 2, peta=T, cm = T, holm=T)
 
